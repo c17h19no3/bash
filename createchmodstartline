@@ -1,0 +1,36 @@
+#!/bin/bash  # This Line Must Be ident for your system.. 
+
+
+REQ_ARGS=1
+ALL_ARGS=$#
+
+
+if [ $ALL_ARGS != $REQ_ARGS ]; then
+        echo " ***** Create Execution File Fast *****"
+        echo "  ** Usage: ./mksh.sh filename.sh or filename.py"
+        echo "  ** Goodbye."
+        exit 1
+fi
+
+if [ -n $1 ]; then
+        echo "$1"
+        touch $1
+        echo "created $1"
+        chmod +x $1
+        echo "chmod +x $1 done!"
+fi
+
+filename="$1"
+whichbash=$(which bash)
+whichpython3=$(which python3)
+expands=$( echo $filename |  cut -d"." -f 2 )
+
+while [ -n $filename ]; do
+        if [ $expands = "sh" ]; then
+                echo '#!'${whichbash} > $filename
+        fi
+        if [ $expands = "py" ]; then
+                echo '#!'${whichpython3} > $filename
+        fi
+        break
+done
